@@ -1,0 +1,11 @@
+import { chromium } from "playwright";
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 1000, height: 1100 } });
+await p.goto("http://localhost:5173", { waitUntil: "networkidle" });
+await p.fill('input[type="text"]', "AAPL");
+await p.click('button[type="submit"]');
+await p.waitForSelector("text=Previous Close", { timeout: 20000 });
+await p.waitForTimeout(1500);
+await p.screenshot({ path: "verify-screenshot.png", fullPage: true });
+await b.close();
+console.log("screenshot saved");
